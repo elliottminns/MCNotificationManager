@@ -11,7 +11,7 @@
 static CGFloat const kMCNotificationViewWidth     = 300;
 static CGFloat const kMCNotificationViewHeight    = 64;
 static CGFloat const kMCNotificationViewPadding   = 10;
-static CGFloat const kMCNotificationViewImageSize = 44;
+static CGFloat const kMCNotificationViewImageSize = 40;
 
 @interface MCNotificationView ()
 
@@ -31,8 +31,8 @@ static CGFloat const kMCNotificationViewImageSize = 44;
 	self = [super initWithFrame:frame];
 	if (self) {
 		_imageView = [[UIImageView alloc] init];
-        _imageView.contentMode = UIViewContentModeRight;
-		_imageView.tintColor = [UIColor whiteColor];
+        _imageView.contentMode = UIViewContentModeScaleToFill;
+//		_imageView.tintColor = [UIColor whiteColor];
 		[self addSubview:_imageView];
         
 		_textLabel = [[UILabel alloc] init];
@@ -53,11 +53,17 @@ static CGFloat const kMCNotificationViewImageSize = 44;
 	CGRect bounds = self.bounds;
     CGFloat offset = (CGRectGetWidth(bounds)-kMCNotificationViewWidth)/2;
     
-	bounds.origin.y += 20; bounds.size.height -= 20;
+	bounds.origin.y += 20;
+    bounds.size.height -= 20;
 	self.imageView.frame = CGRectMake(offset,
                                       20, // status bar height
                                       kMCNotificationViewImageSize,
                                       kMCNotificationViewImageSize);
+    
+    if (self.notification.circleImage) {
+        self.imageView.layer.cornerRadius = kMCNotificationViewImageSize / 2;
+        self.imageView.layer.masksToBounds = YES;
+    }
     
     if (!self.detailTextLabel.text ||
         [self.detailTextLabel.text isEqualToString:@""]) {
@@ -67,6 +73,8 @@ static CGFloat const kMCNotificationViewImageSize = 44;
                                           44);
     }
     else {
+        self.textLabel.font = self.notification.titleFont;
+        self.detailTextLabel.font = self.notification.detailFont;
         self.textLabel.frame = CGRectMake(offset+kMCNotificationViewImageSize+kMCNotificationViewPadding,
                                           20+22-[self.textLabel.font lineHeight],
                                           kMCNotificationViewWidth-kMCNotificationViewImageSize-kMCNotificationViewPadding,
@@ -83,11 +91,11 @@ static CGFloat const kMCNotificationViewImageSize = 44;
 - (void)setNotification:(MCNotification *)notification {
     _notification = notification;
     
-    self.imageView.image = [notification.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.imageView.image = notification.image;//[notification.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	self.textLabel.text = notification.text;
     self.detailTextLabel.text = notification.detailText;
     
-    self.imageView.tintColor = notification.tintColor;
+//    self.imageView.tintColor = notification.tintColor;
     self.textLabel.textColor = notification.tintColor;
     self.detailTextLabel.textColor = notification.tintColor;
     

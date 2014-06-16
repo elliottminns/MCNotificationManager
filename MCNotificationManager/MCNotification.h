@@ -14,12 +14,17 @@
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSString *detailText;
 
+@property (strong, nonatomic) UIFont *titleFont;
+@property (strong, nonatomic) UIFont *detailFont;
+
 @property (strong, nonatomic) UIColor *tintColor;
 @property (strong, nonatomic) UIColor *backgroundColor;
 
+@property (assign, nonatomic) BOOL circleImage;
+
 @property (strong, nonatomic) NSDictionary *userInfo;
 
-@property (weak, nonatomic, readonly) id target;
+@property (weak,   nonatomic, readonly) id target;
 @property (assign, nonatomic, readonly) SEL action;
 @property (assign, nonatomic, readonly) UIControlEvents controlEvents;
 
